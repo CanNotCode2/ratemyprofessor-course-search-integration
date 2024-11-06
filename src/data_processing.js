@@ -180,7 +180,7 @@ fragment RateTeacherLink_teacher on Teacher {
             (response) => {
                 if (response && response.data && response.data.newSearch && response.data.newSearch.teachers) {
                     const professorData = response.data.newSearch.teachers.edges;
-
+                    console.log("Professor data: " + professorData)
                     if (professorData && professorData.length > 0) {
                         const professor = professorData[0].node;
 
