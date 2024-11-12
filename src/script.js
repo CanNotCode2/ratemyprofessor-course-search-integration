@@ -48,7 +48,7 @@
     async function run() {
         let iframe = null;
         let attempts = 0;
-        const maxAttempts = 20;  // Try for up to 2 seconds (20 * 100ms)
+        const maxAttempts = 30;
 
         while (iframe === null && attempts < maxAttempts) {
             iframe = document.getElementById("ptModFrame_0");
@@ -59,8 +59,9 @@
         }
 
         if (iframe === null) {
-            console.error("Iframe not found after multiple attempts.");
-            return; // Exit if the iframe is not found
+            iframe = document.getElementById("ptifrmtgtframe");
+            console.log(iframe)
+            if (!iframe) return;
         }
 
         const innerDoc = iframe.contentDocument;
@@ -114,7 +115,11 @@
 
     function checkAndRun() {
         let iframe = document.getElementById("ptModFrame_0");
-        if (!iframe) return;
+        if (!iframe) {
+            iframe = document.getElementById("ptifrmtgtframe");
+            if (!iframe) return;
+        }
+
 
         let innerDoc = iframe.contentDocument || iframe.contentWindow.document;
         let resultElement = innerDoc.getElementsByClassName("PSGROUPBOXLABEL")[0];
