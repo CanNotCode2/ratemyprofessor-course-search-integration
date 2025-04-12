@@ -4,7 +4,7 @@ import {log} from "../../logger.ts";
 const schoolID = 1232;
 const schoolNameWebEncoded = 'The%20University%20of%20North%20Carolina%20at%20Chapel%20Hill';
 
-export async function generateProfRating(professorsInput: string): Promise<string[] | null> {
+export async function generateProfRating(professorsInput: string): Promise<(string)[][] | null> {
         // Split the input string by comma, newline, or multiple whitespace
         // and filter out empty strings
         const professorNames = professorsInput
@@ -20,31 +20,38 @@ export async function generateProfRating(professorsInput: string): Promise<strin
                     result = await searchProfessor(fullName, schoolID, schoolNameWebEncoded);
                 } catch (error) {
                     log.error('Error fetching professor data:', error);
-                    return createRatingCell(
+                    let str = createRatingCell(
                         'Search',
                         `https://www.ratemyprofessors.com/search/professors/${schoolID}?q=${fullName}`,
                         defaultStyle(true)
                     );
+
+                    return [str, 0, "N/A"]
                 }
 
                 if (result.numRatings === 0 || !checkNameMatch(result.name, fullName)) {
-                    return createRatingCell(
+                    let str = createRatingCell(
                         'Search',
                         `https://www.ratemyprofessors.com/search/professors/${schoolID}?q=${fullName}`,
                         defaultStyle(false)
                     );
+
+                    return [str, 0, "N/A"]
                 }
 
                 const rating = result.avgRating;
+                const difficulty = result.avgDifficulty;
+                const wouldTakeAgainPercent = result.wouldTakeAgainPercent;
                 const id = result.id;
                 const formattedRating = Number.isInteger(rating) ? rating + '.0' : rating.toString();
                 const colorStyle = getRatingStyle(rating);
 
-                return createRatingCell(
+                let str =  createRatingCell(
                     formattedRating,
                     `https://www.ratemyprofessors.com/professor/${id}`,
                     colorStyle
                 );
+                return [str, difficulty, wouldTakeAgainPercent]
             })
         );
 }

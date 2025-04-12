@@ -1,6 +1,7 @@
 import {waitForElement} from '../utils/dom_utils.ts';
 import {log} from "../../logger.ts";
 import {generateProfRating, injectCSS} from "../utils/rmp_utils.ts";
+import { appendPopUp } from '../utils/popup_utils.ts';
 
 export async function handleNewSite() {
     let iframeDoc: Document;
@@ -84,9 +85,8 @@ export async function handleNewSite() {
 
                             // Append each rating element to the container
                             ratingElements.forEach((ratingHtml) => {
-                                const tempDiv = iframeDoc.createElement("div");
-                                tempDiv.innerHTML = ratingHtml;
-                                ratingsContainer.appendChild(tempDiv.firstChild!); // Append the <td> element
+                                let newTag = appendPopUp(ratingHtml)
+                                ratingsContainer.appendChild(newTag); // Append the <td> element
                             });
 
                             // Inject the container after the last child
@@ -107,9 +107,8 @@ export async function handleNewSite() {
                         if (ratingElements !== null && ratingElements.length > 0) {
                             ratingElements.forEach((ratingHtml) => {
                                 widescreenDiv.appendChild(bufferDiv);
-                                const tempDiv = iframeDoc.createElement("div");
-                                tempDiv.innerHTML = ratingHtml;
-                                widescreenDiv.appendChild(tempDiv);
+                                let popUp = appendPopUp(ratingHtml)
+                                widescreenDiv.appendChild(popUp);
                             })
                         }
                     }

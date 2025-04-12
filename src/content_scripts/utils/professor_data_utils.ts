@@ -6,6 +6,8 @@ export interface ProfessorResult {
     numRatings: number;
     name: string;
     avgRating: number;
+    avgDifficulty: number;
+    wouldTakeAgainPercent: any;
     id: number;
 }
 
@@ -105,6 +107,7 @@ fragment CompareProfessorsColumn_teacher on Teacher {
   department
   departmentId
   avgRating
+  avgDifficulty
   numRatings
   wouldTakeAgainPercentRounded
   mandatoryAttendance {
@@ -205,10 +208,12 @@ fragment RateTeacherLink_teacher on Teacher {
                             department: professor.department,
                             school: professor.school.name,
                             avgRating: professor.avgRating,
+                            avgDifficulty: professor.avgDifficulty,
                             numRatings: professor.numRatings,
                             wouldTakeAgainPercent: professor.wouldTakeAgainPercentRounded,
                             id: professor.legacyId
                         };
+                        console.log(result)
 
                         professorCache.set(name, result);
                         // console.log("Debug to ensure correct # of requests sent")
